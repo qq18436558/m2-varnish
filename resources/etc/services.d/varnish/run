@@ -1,0 +1,3 @@
+#!/usr/bin/sh
+/usr/sbin/varnishd -P /run/varnishd.pid -a :80 -F -T localhost:6082 -f /etc/varnish/default.vcl -S /etc/varnish/secret -s malloc,256m
+echo "varnishd starting"

@@ -1,14 +1,16 @@
-FROM ubuntu:20.04
+From ubuntu:16.04
 
-ENV LANG C.UTF-8
+MAINTAINER Alankrit Srivastava alankrit.srivastava256@webkul.com
 
-RUN apt update && DEBIAN_FRONTEND=noninteractive apt-get install -y wget tzdata && apt -y install varnish && \
-    wget https://github.com/just-containers/s6-overlay/releases/download/v2.1.0.2/s6-overlay-amd64.tar.gz -O /tmp/s6-overlay-amd64.tar.gz && \
-    tar xzf /tmp/s6-overlay-amd64.tar.gz -C / && \
-    mkdir /logs && apt-get autoremove -y && apt-get clean && apt-get autoclean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+##update server
 
-EXPOSE 80 6081 6082
-
-COPY resources/etc/ /etc/
-
-ENTRYPOINT ["/init"]
+RUN apt-get update \
+##install supervisor and setup supervisord.conf file
+&& apt-get install -y supervisor \
+&& mkdir -p /var/log/supervisor \
+##install varnish
+&& apt-get -y install varnish \
+&& rm /etc/varnish/default.vcl \
+&& rm /etc/default/varnish 
+EXPOSE 6082 80
+CMD ["/usr/bin/supervisord"]

@@ -20,6 +20,4 @@ RUN     set -x && \
 
 COPY    bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
-RUN     chmod +x /usr/local/bin/docker-entrypoint
-
 CMD     ["/usr/local/bin/docker-entrypoint"]

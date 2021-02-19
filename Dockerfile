@@ -1,5 +1,7 @@
 FROM    alpine:3.13.2
 
+ENV LANG C.UTF-8
+
 ARG     VARNISH_VERSION="${VARNISH_VERSION:-6.5.1-r0}"
 
 ENV     VARNISH_PORT="8080" \
@@ -17,5 +19,7 @@ RUN     set -x && \
         rm -rf /tmp/* /var/cache/apk/*
 
 COPY    bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+
+RUN     chmod +x /usr/local/bin/docker-entrypoint
 
 CMD     ["/usr/local/bin/docker-entrypoint"]

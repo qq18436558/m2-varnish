@@ -8,5 +8,3 @@ RUN     apk update && apk add --no-cache varnish apache2-utils && \
         rm -rf /tmp/* /var/cache/*  /root/.cache /root/.ash_history
 
 COPY resources/etc/ /etc/
-
-ENTRYPOINT ["/init"]

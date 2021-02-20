@@ -1,10 +1,10 @@
-FROM    alpine:3.13.2
+FROM ubuntu:20.04
 
-ENV     LANG C.UTF-8
+ENV LANG C.UTF-8
 
-RUN     apk update && apk add --no-cache varnish apache2-utils && \
-        wget https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz -O /tmp/s6-overlay-amd64.tar.gz && \
-        tar xzf /tmp/s6-overlay-amd64.tar.gz -C / --exclude="./bin" && tar xzf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin && \
-        rm -rf /tmp/* /var/cache/*  /root/.cache /root/.ash_history
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt-get install -y wget tzdata && apt -y install varnish apache2-utils && \
+    wget https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz -O /tmp/s6-overlay-amd64.tar.gz && \
+    tar xzf /tmp/s6-overlay-amd64.tar.gz -C / --exclude="./bin" && tar xzf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin && \
+    mkdir /logs && apt-get autoremove -y && apt-get clean && apt-get autoclean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY resources/etc/ /etc/
+EXPOSE 80/tcp

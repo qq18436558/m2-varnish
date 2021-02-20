@@ -1,23 +1,12 @@
 FROM    alpine:3.13.2
 
-ENV LANG C.UTF-8
+ENV     LANG C.UTF-8
 
-ARG     VARNISH_VERSION="${VARNISH_VERSION:-6.5.1-r0}"
+RUN     apk update && apk add --no-cache varnish apache2-utils && \
+        wget https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz -O /tmp/s6-overlay-amd64.tar.gz && \
+        tar xzf /tmp/s6-overlay-amd64.tar.gz -C / --exclude="./bin" && tar xzf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin && \
+        rm -rf /tmp/* /var/cache/*  /root/.cache /root/.ash_history
 
-ENV     VARNISH_PORT="80" \
-        VARNISH_RAM_STORAGE="256M" \
-        VARNISH_VCL_PATH="/etc/varnish/default.vcl" \
-        VARNISH_VCL_CONTENT="" \
-        VARNISH_VCL_DEFAULT_BACKEND="localhost:80" \
-        VARNISHD_ADDITIONAL_OPTS="-T localhost:6082" \
-        VARNISHLOG="false" \
-        VARNISHLOG_OPTS="" \
-        VARNISH_VERSION="${VARNISH_VERSION}"
+COPY resources/etc/ /etc/
 
-RUN     set -x && \
-        apk add --no-cache --upgrade varnish=${VARNISH_VERSION} && \
-        rm -rf /tmp/* /var/cache/apk/*
-
-COPY    bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-
-CMD     ["/usr/local/bin/docker-entrypoint"]
+ENTRYPOINT ["/init"]

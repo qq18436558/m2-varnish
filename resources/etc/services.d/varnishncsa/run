@@ -1,3 +1,0 @@
-#!/bin/sh
-/usr/bin/varnishncsa -F "%{X-Forwarded-For}i %h %l %u %t \"%r\" %s %b \"%{Referer}i\" \"%{User-agent}i\"" | /usr/sbin/rotatelogs -n 60 /logs/varnish.log 86400 480
-echo "varnishncsa starting"

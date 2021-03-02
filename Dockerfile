@@ -7,4 +7,4 @@ RUN apt update && DEBIAN_FRONTEND=noninteractive apt-get install -y wget tzdata 
     tar xzf /tmp/s6-overlay-amd64.tar.gz -C / --exclude="./bin" && tar xzf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin && \
     mkdir /logs && apt-get autoremove -y && apt-get clean && apt-get autoclean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-EXPOSE 80/tcp
+EXPOSE 80 6081 6082
